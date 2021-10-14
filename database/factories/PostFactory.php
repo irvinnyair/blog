@@ -1,0 +1,38 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
+
+class PostFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = Post::class;
+
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+        $name = $this->faker->unique()->sentence();
+        return [
+            'name' => $name,
+            'slug' => Str::slug($name), //Texto con guiones "Hola-como-estas"
+            'extract' => $this->faker->text(250), //Texto con 250 caracteres
+            'body' => $this->faker->text(2000),
+            'status' => $this->faker->randomElement([1,2]), //Ingresa 2 valores aleatoreos
+            'category_id' => Category::all()->random()->id,
+            'user_id' => User::all()->random()->id,
+        ];
+    }
+}
